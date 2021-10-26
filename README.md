@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# React: Forms
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Props
 
-## Available Scripts
+#### Q: What are props?
 
-In the project directory, you can run:
+Information (read-only) sent into a child component from a parent component like an HTML attribute:
 
-### `yarn start`
+```jsx
+    // name and location are props
+    <MyComponent name={'Laura'} location={'MN'} />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Components should never change their own props.**
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### State
 
-### `yarn build`
+#### Q: What is state?
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Information managed from within a component.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+DO NOT modify state directly.
+This will not re-render a component.
+State is immutable. What are some benefits of this?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+https://reactjs.org/docs/state-and-lifecycle.html
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Class Component
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```jsx
+import React, { Component } from 'react'
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+export default class List extends Component{
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    constructor(props){
+        super(props)
+        this.state = {
+            items: []
+        }
 
-## Learn More
+    }
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    //...
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    someMethod(){
+        const newItemsArray = ["item 1"]
+        this.setState({items: newItemsArray})
+        //OR
+        this.setState(prevState => ({
+            items: [...prevState.items, newItemsArray[0]]
+        }))
+    }
 
-### Code Splitting
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
 
-### Analyzing the Bundle Size
+**NOTE:** class components `setState` accepts a second OPTIONAL argument: a function which is a callback once the state is set (b/c it is set asynchronously). To get a similar effect with react hooks, you use useEffect, which accepts a function as an argument which runs upon initial render and every time state changes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+### Controlled Forms
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### Q: What do we use in React to handle data that changes as user interacts with our app?
 
-### Advanced Configuration
+We want to keep our React State as our "single source of truth", so we will keep our input fields controlled.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Input fields that have their value managed by state are called "controlled components".
 
-### Deployment
+```
+export default class MyForm extends Component{
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    constructor(props){
+        super(props)
+        this.state = {
+            note: ""
+        }
 
-### `yarn build` fails to minify
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    handleChange = e => {
+      this.setState({
+        note: e.target.value
+      })
+    }
+
+    handleSubmit(){
+        // send data wherever
+        this.setState({
+          note: ""
+        })
+    }
+
+    render(){
+      return(
+        <form onSubmit={handleSubmit}>
+          <input type="text" value={this.state.note} onChange={handleChange} />
+          <input type="submit" />
+        </form>
+      )
+    }
+}
+```
