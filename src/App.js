@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import NotesContainer from './components/NotesContainer';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         </a>
       </header>
       <main>
-        Our code goes here!
+        <NotesContainer />
       </main>
     </div>
   );
