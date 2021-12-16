@@ -3,24 +3,24 @@ import React, { Component } from 'react'
 export default class NoteForm extends Component {
 
   state = {
-    topic: "",
-    author: "",
-    note: ""
+    topic: "", // default topic is empty in our form
+    author: "", // default author is empty in our form
+    note: "" // default note is empty in our form
   }
 
   handleChange = (e) => {
-    this.setState(() => {
-      console.dir(e.target)
-      return {
-        [e.target.name]: e.target.value
-      }
+    this.setState({ //() => {
+      // console.dir(e.target)
+      // return {
+        [e.target.name]: e.target.value // square brackets if you need to evaluate a key name from something else like a variable
+      //}
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
 
-    this.props.createNote(this.state)
+    this.props.addNote(this.state)
     this.setState({
       topic: "",
       author: "",

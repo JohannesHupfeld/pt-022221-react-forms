@@ -17,14 +17,14 @@ export default class NotesContainer extends Component {
     ]
   }
 
-  addNote = note => {
+  addNote = (note) => {
     // WRONG
     // this.setState({
     //   notes: [...this.state.notes, note]
     // })
 
     // RIGHT
-    this.setState((prevState, prevProps) => {
+    this.setState((prevState, prevProps) => { //callback function
       return {
         notes: [...prevState.notes, note]
       }
@@ -34,12 +34,14 @@ export default class NotesContainer extends Component {
   render() {
     return (
       <div>
-        <NoteForm createNote={this.addNote} />
+        <NoteForm add Note={this.addNote} />
         <h2>All Notes</h2>
-        <ul style={{textAlign: "left"}}>
-          {this.state.notes.map(({note, topic, author}) => <li>{topic}: {note} by {author}</li>)}
+        <ul style={{textAlign: "left"}}> 
+          {this.state.notes.map(({note, topic, author}) => <li>{topic}: {note} by {author}</li>)} 
+          {/* {this.state.notes.map({n} => <li>{n.topic}: {n.note} by {n. author}</li>)}  */}
         </ul>
       </div>
+      
     )
   }
 }
